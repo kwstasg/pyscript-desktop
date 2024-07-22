@@ -8,6 +8,7 @@ apps = [
     {"id": 3, "name": "Diablo", "icon": "fas fa-gamepad", "src": "https://d07riv.github.io/diabloweb/"}
 ]
 
+# Function to generate the app's HTML structure
 def generate_app_html(app):
     desktop = document.getElementById('desktop')
 
@@ -69,6 +70,7 @@ def generate_app_html(app):
     window_div.appendChild(content_div)
     desktop.appendChild(window_div)
 
+# Function to open the app link in a new tab
 def open_link(app):
     content_div = document.querySelector(f'#window{app["id"]} .content')
     content_div.innerHTML = ""
@@ -81,6 +83,14 @@ def open_link(app):
 for app in apps:
     generate_app_html(app)
 
+# Function to bring a window to the front
+def bring_to_front(window):
+    windows = document.querySelectorAll('.window')
+    for w in windows:
+        w.style.zIndex = '0'
+    window.style.zIndex = '10'
+
+# Function to show the window
 def show_window(window_id):
     window = document.getElementById(window_id)
     content_div = window.querySelector('.content')
@@ -93,7 +103,9 @@ def show_window(window_id):
         iframe.onerror = create_proxy(lambda event: open_link(app))
         content_div.appendChild(iframe)
     window.style.display = "block"
+    bring_to_front(window)
 
+# Function to hide the window
 def hide_window(window_id):
     window = document.getElementById(window_id)
     content_div = window.querySelector('.content')
@@ -102,9 +114,11 @@ def hide_window(window_id):
         content_div.removeChild(iframe)
     window.style.display = "none"
 
+# Function to minimize the window
 def minimize_window(event):
     event.target.closest('.window').style.display = "none"
 
+# Function to maximize the window
 def maximize_window(event):
     window = event.target.closest('.window')
     if window.dataset.maximized == "true":
@@ -124,6 +138,7 @@ def maximize_window(event):
         window.style.left = "0"
         window.dataset.maximized = "true"
 
+# Function to make the window draggable
 def make_draggable(window_id):
     window = document.getElementById(window_id)
     titlebar = window.querySelector(".titlebar")
@@ -155,6 +170,7 @@ def make_draggable(window_id):
 
     titlebar.addEventListener("mousedown", drag_start_proxy, {"passive": True})
 
+# Function to initialize the desktop
 def init_desktop():
     icons = document.querySelectorAll(".icon")
     for i, icon in enumerate(icons, start=1):
@@ -173,5 +189,8 @@ def init_desktop():
 
         # Make windows draggable
         make_draggable(window_id)
+
+        # Bring to front on window mousedown
+        document.getElementById(window_id).addEventListener("mousedown", create_proxy(lambda event, window_id=window_id: bring_to_front(document.getElementById(window_id))), {"passive": True})
 
 init_desktop()
