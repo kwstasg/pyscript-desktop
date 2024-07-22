@@ -14,7 +14,7 @@ This project creates a web-based desktop environment using PyScript. Users can l
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/pyscript-desktop.git
+   git clone https://github.com/kwstasg/pyscript-desktop.git
    cd pyscript-desktop
    ```
 
