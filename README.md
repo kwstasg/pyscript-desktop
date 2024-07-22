@@ -52,7 +52,7 @@ Each application in the `apps` list is represented by a dictionary with the foll
 
 - `id` (int): A unique identifier for the application.
 - `name` (str): The display name of the application.
-- `icon` (str): The FontAwesome class for the application's icon.
+- `icon` (str): The FontAwesome class for the application's icon. (https://fontawesome.com/search?o=r&m=free)
 - `src` (str): The URL to be loaded in an iframe when the application is opened.
 
 
