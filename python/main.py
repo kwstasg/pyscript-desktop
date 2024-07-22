@@ -1,6 +1,7 @@
 from js import document, window
 from pyodide.ffi import create_proxy
 
+# Add Apps Here
 apps = [
     {"id": 1, "name": "Paint", "icon": "fas fa-paint-roller", "src": "https://jspaint.app/"},
     {"id": 2, "name": "Visual Studio Code", "icon": "fas fa-code", "src": "https://emupedia.net/emupedia-app-vscode/"},
