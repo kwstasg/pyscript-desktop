@@ -4,8 +4,9 @@ from pyodide.ffi import create_proxy
 # Add Apps Here
 apps = [
     {"id": 1, "name": "Paint", "icon": "fas fa-paint-roller", "src": "https://jspaint.app/"},
-    {"id": 2, "name": "Visual Studio Code", "icon": "fas fa-code", "src": "https://emupedia.net/emupedia-app-vscode/"},
-    {"id": 3, "name": "Diablo", "icon": "fas fa-gamepad", "src": "https://d07riv.github.io/diabloweb/"}
+    {"id": 2, "name": "Diablo", "icon": "fas fa-gamepad", "src": "https://d07riv.github.io/diabloweb/"},
+    {"id": 3, "name": "Visual Studio Code", "icon": "fas fa-code", "src": "https://emupedia.net/emupedia-app-vscode/"},
+    {"id": 4, "name": "Python Console", "icon": "fa-brands fa-python", "src": "https://pyodide.org/en/stable/console.html"},
 ]
 
 # Function to generate the app's HTML structure
@@ -32,7 +33,15 @@ def generate_app_html(app):
 
     titlebar_div = document.createElement('div')
     titlebar_div.className = 'titlebar'
-    titlebar_div.textContent = app['name']
+
+    # Add icon to the titlebar
+    titlebar_icon = document.createElement('i')
+    titlebar_icon.className = app['icon']
+    titlebar_div.appendChild(titlebar_icon)
+
+    titlebar_span = document.createElement('span')
+    titlebar_span.textContent = app['name']
+    titlebar_div.appendChild(titlebar_span)
 
     buttons_div = document.createElement('div')
     buttons_div.className = 'buttons'
@@ -110,7 +119,7 @@ def hide_window(window_id):
     window = document.getElementById(window_id)
     content_div = window.querySelector('.content')
     iframe = content_div.querySelector('iframe')
-    if iframe:
+    if (iframe):
         content_div.removeChild(iframe)
     window.style.display = "none"
 
