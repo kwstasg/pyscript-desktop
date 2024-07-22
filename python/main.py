@@ -27,6 +27,7 @@ def generate_app_html(app):
     window_div = document.createElement('div')
     window_div.className = 'window'
     window_div.id = f'window{app["id"]}'
+    window_div.dataset.maximized = "false"
 
     titlebar_div = document.createElement('div')
     titlebar_div.className = 'titlebar'
@@ -106,34 +107,45 @@ def minimize_window(event):
 
 def maximize_window(event):
     window = event.target.closest('.window')
-    if window.style.width == "100vw":
-        window.style.width = "800px"
-        window.style.height = "600px"
-        window.style.top = "50px"
-        window.style.left = "50px"
+    if window.dataset.maximized == "true":
+        window.style.width = window.dataset.originalWidth
+        window.style.height = window.dataset.originalHeight
+        window.style.top = window.dataset.originalTop
+        window.style.left = window.dataset.originalLeft
+        window.dataset.maximized = "false"
     else:
+        window.dataset.originalWidth = window.style.width
+        window.dataset.originalHeight = window.style.height
+        window.dataset.originalTop = window.style.top
+        window.dataset.originalLeft = window.style.left
         window.style.width = "100vw"
         window.style.height = "100vh"
         window.style.top = "0"
         window.style.left = "0"
+        window.dataset.maximized = "true"
 
 def make_draggable(window_id):
     window = document.getElementById(window_id)
     titlebar = window.querySelector(".titlebar")
     offsetX = offsetY = 0
+    isDragging = False
 
     def drag_start(event):
-        nonlocal offsetX, offsetY
+        nonlocal offsetX, offsetY, isDragging
         offsetX = event.clientX - window.offsetLeft
         offsetY = event.clientY - window.offsetTop
+        isDragging = True
         document.addEventListener("mousemove", drag_proxy, {"passive": True})
         document.addEventListener("mouseup", drag_end_proxy, {"passive": True})
 
     def drag(event):
-        window.style.left = f"{event.clientX - offsetX}px"
-        window.style.top = f"{event.clientY - offsetY}px"
+        if isDragging:
+            window.style.left = f"{event.clientX - offsetX}px"
+            window.style.top = f"{event.clientY - offsetY}px"
 
     def drag_end(event):
+        nonlocal isDragging
+        isDragging = False
         document.removeEventListener("mousemove", drag_proxy)
         document.removeEventListener("mouseup", drag_end_proxy)
 
