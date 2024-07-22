@@ -3,6 +3,8 @@
 
 This project creates a web-based desktop environment using PyScript. Users can launch and interact with various web applications in draggable, resizable windows.
 
+![Screenshot of the Desktop Environment](screenshot.jpg)
+
 ## Features
 
 - **Draggable and Resizable Windows**
